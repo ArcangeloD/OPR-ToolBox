@@ -1,4 +1,6 @@
-export const config = {
-  supabaseUrl = "your supabase database URL",
-  supabaseKey = "your supabase database API Key"
-};
+export const AppTitle = "OPR Toolbox"
+
+export const SupabaseConfig = {
+  URL: "your Supabase URL here",
+  APIKey: "your Supabase API Key here"
+}
