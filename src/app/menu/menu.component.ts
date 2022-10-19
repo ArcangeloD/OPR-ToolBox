@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppTitle } from './../../environments/config';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-menu',
@@ -8,7 +8,7 @@ import { AppTitle } from './../../environments/config';
 })
 export class MenuComponent implements OnInit {
 
-  title: String = AppTitle;
+  title: String = environment.title;
 
   constructor() {
   }
