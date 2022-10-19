@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   title: 'OPR ToolBox',
   supabaseUrl: 'your url here',
-  supabaseKey: 'your api key here',
+  supabaseKey: 'your api key here'
 };
 
 /*
