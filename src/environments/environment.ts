@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  title: 'OPR ToolBox',
-  supabaseUrl: 'your url here',
-  supabaseKey: 'your api key here'
+  title: 'Your app name',
+  supabaseUrl: 'Supabase URL',
+  supabaseKey: 'Supabase API Key'
 };
 
 /*

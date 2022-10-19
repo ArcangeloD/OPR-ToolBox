@@ -1,0 +1,29 @@
+<div class="text-center">
+  <div class="mb-3">
+    <img
+      *ngIf="_avatarUrl"
+      [src]="_avatarUrl"
+      alt="Avatar"
+      class="avatar image"
+    />
+    <img
+      *ngIf="!_avatarUrl"
+      src="https://xkqaosxuhwtkayjgblmt.supabase.co/storage/v1/object/sign/avatars/default-icon.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL2RlZmF1bHQtaWNvbi5wbmciLCJpYXQiOjE2NjYxOTE1ODMsImV4cCI6MTk4MTU1MTU4M30.ZBiww9O2ySIxdlX_EDg16Q_uI3140_Xky6uOFOFfHas"
+      alt="Avatar"
+      class="avatar image"
+    />
+  </div>
+  <div class="mb-3">
+    <label class="btn btn-primary" for="single">
+      {{ uploading ? 'Uploading ...' : 'Upload' }}
+    </label>
+    <input
+      style="visibility: hidden;position: absolute"
+      type="file"
+      id="single"
+      accept="image/*"
+      (change)="uploadAvatar($event)"
+      [disabled]="uploading"
+    />
+  </div>
+</div>

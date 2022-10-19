@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { AuthSession } from '@supabase/supabase-js';
 import { Profile, SupabaseService } from '../supabase.service';
 
 @Component({
@@ -13,7 +12,7 @@ export class AccountComponent implements OnInit {
   profile!: Profile;
 
   @Input()
-  session!: AuthSession;
+  session = this.supabase.session;
 
   updateProfileForm = this.formBuilder.group({
     username: '',
@@ -40,15 +39,23 @@ export class AccountComponent implements OnInit {
   async getProfile() {
     try {
       this.loading = true;
-      const { user } = this.session;
-      let { data: profile, error, status } = await this.supabase.profile(user);
+      var session = await this.session;
+      if (session)
+      {
+        const { user } = session;
+        let { data: profile, error, status } = await this.supabase.profile(user);
 
-      if (error && status !== 406) {
-        throw error;
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        if (profile) {
+          this.profile = profile;
+        }
       }
-
-      if (profile) {
-        this.profile = profile;
+      else
+      {
+        alert("Session error, redirecting to home");
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -62,19 +69,27 @@ export class AccountComponent implements OnInit {
   async updateProfile(): Promise<void> {
     try {
       this.loading = true;
-      const { user } = this.session;
+      var session = await this.session;
+      if (session)
+      {
+        const { user } = session;
 
-      const username = this.updateProfileForm.value.username as string;
-      const website = this.updateProfileForm.value.website as string;
-      const avatar_url = this.updateProfileForm.value.avatar_url as string;
+        const username = this.updateProfileForm.value.username as string;
+        const website = this.updateProfileForm.value.website as string;
+        const avatar_url = this.updateProfileForm.value.avatar_url as string;
 
-      const { error } = await this.supabase.updateProfile({
-        id: user.id,
-        username,
-        website,
-        avatar_url,
-      });
-      if (error) throw error;
+        const { error } = await this.supabase.updateProfile({
+          id: user.id,
+          username,
+          website,
+          avatar_url,
+        });
+        if (error) throw error;
+      }
+      else
+      {
+        alert("Session error, redirecting to home");
+      }
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
@@ -84,7 +99,14 @@ export class AccountComponent implements OnInit {
     }
   }
 
-  async signOut() {
-    await this.supabase.signOut();
+  get avatarUrl() {
+    return this.updateProfileForm.value.avatar_url as string;
+  }
+
+  async updateAvatar(event: string): Promise<void> {
+    this.updateProfileForm.patchValue({
+      avatar_url: event,
+    });
+    await this.updateProfile();
   }
 }

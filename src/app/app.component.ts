@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
-//import { SupabaseService } from './supabase.service';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +7,10 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = environment.title;
+  title: String = environment.title;
   
-  //session = this.supabase.session;
-  
-  constructor() {}//private readonly supabase: SupabaseService) {}
+  constructor() {}
 
   ngOnInit() {
-    //this.supabase.authChanges((_, session) => (this.session = session));
   }
 }
