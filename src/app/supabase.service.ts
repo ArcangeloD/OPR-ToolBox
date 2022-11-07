@@ -10,12 +10,7 @@ import {
 import { environment } from 'src/environments/environment';
 import { Database } from 'src/schema';
 
-export interface Profile {
-  id?: string;
-  username: string;
-  website: string;
-  avatar_url: string;
-}
+import { Profile } from './interfaces/profile';
 
 @Injectable({
   providedIn: 'root',
@@ -27,10 +22,18 @@ export class SupabaseService {
   constructor() {
     this.supabase = createClient(
       environment.supabaseUrl,
-      environment.supabaseKey
+      environment.supabaseKey,
+      {
+        realtime: {
+          params: {
+            eventsPerSecond: 10
+          }
+        }
+      }
     );
   }
 
+//Authentication
   get session() {
     this.supabase.auth.getSession().then(({ data }) => {
       this._session = data.session;
@@ -52,8 +55,18 @@ export class SupabaseService {
     return this.supabase.auth.onAuthStateChange(callback);
   }
 
-  signIn(email: string) {
-    return this.supabase.auth.signInWithOtp({ email });
+  signIn(email: string, passwd: string) {
+    return this.supabase.auth.signInWithPassword({ 
+      email: email,
+      password: passwd      
+    });
+  }
+  
+  signUp(email: string, passwd: string) {
+    return this.supabase.auth.signUp({
+      email: email,
+      password: passwd
+    });
   }
 
   signOut() {
@@ -75,5 +88,28 @@ export class SupabaseService {
 
   uploadAvatar(filePath: string, file: File) {
     return this.supabase.storage.from('avatars').upload(filePath, file);
+  }
+  
+//Realtime subscription
+  getChannel(tableName: string) {
+    return this.supabase.channel('public:' + tableName);
+  }
+
+//App Informations
+  appInfos () {
+    return this.supabase
+      .from('app_informations')
+      .select('app_icon, app_name, welcome_message')
+      .single();
+  }
+  
+//News
+
+  news (min: number, max: number) {
+    return this.supabase
+      .from('news')
+      .select('id, title, content, created_at, updated_at, author, profiles(username, avatar_url)')
+      .range(min, max)
+      .order('created_at', { ascending: false });
   }
 }

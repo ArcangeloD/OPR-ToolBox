@@ -1,2 +1,25 @@
-<h1>News</h1>
-Placeholder
+<div class="row">
+  <div class="col-12">
+    <h2>News</h2>
+  </div>
+</div>
+<div class="row" *ngFor="let new of news;">
+  <div class="col-12 mb-3">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">{{ new.title }}</h3>
+      </div>
+      <div class="card-body">
+        <p>{{ new.content }}</p>
+      </div>
+      <div class="card-footer text-muted text">
+        Created : {{ new.created_at | date:'fullDate' }} at {{ new.created_at | date:'hh:mm' }} by <img *ngIf="!new.profiles.avatar_url" class="news_footer_avatar" src="https://xkqaosxuhwtkayjgblmt.supabase.co/storage/v1/object/public/avatars/default-icon.png" /><img *ngIf="new.profiles.avatar_url" class="news_footer_avatar" src="https://xkqaosxuhwtkayjgblmt.supabase.co/storage/v1/object/public/avatars/{{new.profiles.avatar_url}}" /> {{new.profiles.username}}<span *ngIf="new.updated_at"> - Last update : {{ new.updated_at | date:'fullDate' }} at {{ new.updated_at | date:'hh:mm' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 text-center">
+    <button class="btn btn-primary" (click)="loadMoreNews();" [disabled]="reached_last">{{reached_last ? 'You\'ve reached the end' : 'Load more news'}}</button>
+  </div>
+</div>

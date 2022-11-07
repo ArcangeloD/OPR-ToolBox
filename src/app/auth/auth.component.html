@@ -2,25 +2,18 @@
   <div class="col-6">
     <h1 class="text-center">Register/Login</h1>
     <p class="text-center">Sign in via magic link with your email below</p>
-    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()" class="form-widget">
+    <form [formGroup]="signInForm" class="form-widget">
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input
-          id="email"
-          formControlName="email"
-          class="form-control"
-          type="email"
-          placeholder="Your email"
-        />
+        <input id="email" formControlName="email" class="form-control" type="email" placeholder="Your email" />
+        <label for="passwd" class="form-label">Password</label>
+        <input id="passwd" formControlName="passwd" class="form-control" type="password" placeholder="Your password (6-16 characters, minimum 1 Uppercase, 1 lowercase and 1 digit" />
       </div>
       <div class="mb-3 text-center">
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="loading"
-        >
-          {{ loading ? 'Loading' : 'Send magic link' }}
-        </button>
+        <button class="btn btn-success" [disabled]="loading" (click)="login()">{{ loading ? 'Loading' : 'Log in' }}</button>
+      </div>
+      <div class="mb-3 text-center">
+        <button class="btn btn-primary" [disabled]="loading" (click)="register()">{{ loading ? 'Loading' : 'Register' }}</button>
       </div>
     </form>
   </div>

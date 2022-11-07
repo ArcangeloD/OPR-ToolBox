@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 })
 export class MenuComponent implements OnInit {
 
-  title: String = environment.title;
+  title: String = '';
+  app_icon: String = '';
   
   session = this.supabase.session;
 
@@ -22,11 +23,24 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.supabase.authChanges((_, session) => (this.session = session));
+    this.getAppInfos();
   }
   
   async logout (): Promise<void> {
     await this.supabase.signOut();
     this.router.navigate(['']);
   }
-
+  
+  async getAppInfos(): Promise<void> {
+    const { data, error } = await this.supabase.appInfos();
+    if (error)
+    {
+      alert(error);
+    }
+    else
+    {
+      this.title = data.app_name;
+      this.app_icon = data.app_icon;
+    }
+  }
 }
