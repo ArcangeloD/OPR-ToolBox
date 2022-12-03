@@ -48,6 +48,14 @@ export class SupabaseService {
       .eq('id', user.id)
       .single();
   }
+  
+  profileById(id: String) {
+    return this.supabase
+      .from('profiles')
+      .select(`username, website, avatar_url`)
+      .eq('id', id)
+      .single();
+  }
 
   authChanges(
     callback: (event: AuthChangeEvent, session: Session | null) => void
@@ -111,5 +119,9 @@ export class SupabaseService {
       .select('id, title, content, created_at, updated_at, author, profiles(username, avatar_url)')
       .range(min, max)
       .order('created_at', { ascending: false });
+  }
+  
+  newsChannel() {
+    return this.supabase.channel('public:news');
   }
 }
